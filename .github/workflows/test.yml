@@ -1,6 +1,9 @@
-name: test
+name: Python CI with pytest
 on:
-  workflow_dispatch:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
 jobs:
   test01:
     runs-on: ubuntu-latest
