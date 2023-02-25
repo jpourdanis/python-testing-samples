@@ -9,7 +9,8 @@ def driver():
     options = webdriver.ChromeOptions()
     options.headless = True
     url = "https://the-internet.herokuapp.com"
-    with webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options) as driver:
-        driver.get(url)
-        yield driver
-        driver.close()
+    driver = webdriver.Chrome(service=ChromeService(
+        ChromeDriverManager().install()), options=options)
+    driver.get(url)
+    yield driver
+    driver.close()
