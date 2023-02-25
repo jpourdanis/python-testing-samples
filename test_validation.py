@@ -1,57 +1,67 @@
 from pages.dynamicControl import DynamcControls
 from pages.formAuth import FormAuthentication
 from pages.addRemove import AddRemoveElement
-
+from pages.home import Home
 
 
 def test_form_authentication(driver):
-    form = FormAuthentication(driver)
+    home_page = Home(driver)
+    home_page.navigate_to_form_page()
 
-    form.navigate_to_form_page()
-    form.enter_login_username("tomsmith")
-    form.enter_login_password("SuperSecretPassword!")
-    form.click_login_button()
+    form_authentication_page = FormAuthentication(driver)
+    form_authentication_page.enter_login_username("tomsmith")
+    form_authentication_page.enter_login_password("SuperSecretPassword!")
+    form_authentication_page.click_login_button()
 
-    assert "logged in" in form.check_login_logout_status().text 
+    assert "logged in" in form_authentication_page.check_login_logout_status().text
 
-    form.click_logout_button()
-    assert "logged out" in form.check_login_logout_status().text
+    form_authentication_page.click_logout_button()
+
+    assert "logged out" in form_authentication_page.check_login_logout_status().text
+
 
 def test_add_remove_element(driver):
-    add_rem = AddRemoveElement(driver)
-    add_rem.navigate_to_add_remove_page()
-    add_rem.click_add_element_button()
-    delete_button = add_rem.check_delete_button().text
+    home_page = Home(driver)
+    home_page.navigate_to_add_remove_page()
+
+    add_remove_element_page = AddRemoveElement(driver)
+    add_remove_element_page.click_add_element_button()
+    delete_button = add_remove_element_page.check_delete_button().text
     assert delete_button == "Delete"
 
-    add_rem.click_delete_button()
-    delete_button = add_rem.check_delete_button()
+    add_remove_element_page.click_delete_button()
+    delete_button = add_remove_element_page.check_delete_button()
     assert delete_button == "No Delete Button"
 
-    
+
 def test_dynamic_control_checkbox(driver):
-    checkbox = DynamcControls(driver)
-    checkbox.navigate_to_dynamic_controls_page()
+    home_page = Home(driver)
+    home_page.navigate_to_dynamic_controls_page()
 
-    assert checkbox.check_checkbox_element() == "Checkbox Element Presents"
-    checkbox.click_control_button("checkbox")
+    dynamc_controls_page = DynamcControls(driver)
 
-    assert checkbox.check_checkbox_element() == "No Checkbox Element"
+    assert dynamc_controls_page.check_checkbox_element() == "Checkbox Element Presents"
+    dynamc_controls_page.click_control_button("checkbox")
 
-    checkbox.click_control_button("checkbox")
-    
-    assert checkbox.check_checkbox_element() == "Checkbox Element Presents"
+    assert dynamc_controls_page.check_checkbox_element() == "No Checkbox Element"
+
+    dynamc_controls_page.click_control_button("checkbox")
+
+    assert dynamc_controls_page.check_checkbox_element() == "Checkbox Element Presents"
+
 
 def test_dynamic_control_input_text(driver):
-    input_text = DynamcControls(driver)
-    input_text.navigate_to_dynamic_controls_page()
-    
-    assert input_text.checking_input_text_element() == False
+    home_page = Home(driver)
+    home_page.navigate_to_dynamic_controls_page()
 
-    input_text.click_control_button("input")
-    
-    assert input_text.checking_input_text_element() == True
+    dynamc_controls_page = DynamcControls(driver)
 
-    input_text.click_control_button("input")
+    assert dynamc_controls_page.checking_input_text_element() == False
 
-    assert input_text.checking_input_text_element() == False
+    dynamc_controls_page.click_control_button("input")
+
+    assert dynamc_controls_page.checking_input_text_element() == True
+
+    dynamc_controls_page.click_control_button("input")
+
+    assert dynamc_controls_page.checking_input_text_element() == False
