@@ -1,10 +1,11 @@
 import json
 import os
+import secrets
 import pytest
 import requests
 import jsonpath
 from conftest import NewUser
-
+randomEmail = f"{secrets.token_hex(8)}@mail.com"
 baseUrl = "https://gorest.co.in/public/v2"
 path = "/users"
 headers = {"Authorization": f"Bearer {os.environ.get('API_TOKEN')}"}
@@ -16,6 +17,7 @@ def test_successful_creation_new_user():
     Test on gorest API, create user with a random email.
     """
 
+    NewUser.email = randomEmail
     params = {
         'name': NewUser.name,
         'email': NewUser.email,

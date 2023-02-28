@@ -1,10 +1,11 @@
 import json
 import os
+import secrets
 import pytest
 import requests
 import jsonpath
 from conftest import NewUser
-
+randomEmail = f"{secrets.token_hex(8)}@mail.com"
 baseUrl = "https://gorest.co.in/public/v2"
 path = "/graphql"
 headers = {"Authorization": f"Bearer {os.environ.get('API_TOKEN')}"}
@@ -31,7 +32,7 @@ def test_successful_creation_new_user():
       }
     }
     """
-
+    NewUser.email = randomEmail
     createUserVariables = {
         'name': NewUser.name,
         'email': NewUser.email,
@@ -74,7 +75,7 @@ def test_get_all_users():
         url=baseUrl+path, headers=headers, json={"query": getAllUsersQuery})
     responseJson = json.loads(response.text)
     assert response.status_code == 200
-    assert len(jsonpath.jsonpath(responseJson, '$.data.users.nodes'))[0] > 0
+    assert len(jsonpath.jsonpath(responseJson, '$.data.users.nodes')[0]) > 0
 
 
 @pytest.mark.order(3)
