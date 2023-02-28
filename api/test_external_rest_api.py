@@ -7,7 +7,7 @@ from conftest import NewUser
 
 baseUrl = "https://gorest.co.in/public/v2"
 path = "/users"
-headers = {"Authorization": f"Bearer {os.environ.get('Token')}"}
+headers = {"Authorization": f"Bearer {os.environ.get('API_TOKEN')}"}
 
 
 @pytest.mark.order(1)

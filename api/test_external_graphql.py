@@ -7,7 +7,7 @@ from conftest import NewUser
 
 baseUrl = "https://gorest.co.in/public/v2"
 path = "/graphql"
-headers = {"Authorization": f"Bearer {os.environ.get('Token')}"}
+headers = {"Authorization": f"Bearer {os.environ.get('API_TOKEN')}"}
 
 
 @pytest.mark.order(1)
@@ -74,7 +74,7 @@ def test_get_all_users():
         url=baseUrl+path, headers=headers, json={"query": getAllUsersQuery})
     responseJson = json.loads(response.text)
     assert response.status_code == 200
-    assert len(jsonpath.jsonpath(responseJson, '$.data.users.nodes')) > 0
+    assert len(jsonpath.jsonpath(responseJson, '$.data.users.nodes'))[0] > 0
 
 
 @pytest.mark.order(3)
