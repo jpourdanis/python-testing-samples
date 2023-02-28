@@ -20,4 +20,4 @@ jobs:
       - name: Install the necessary packages
         run: pip install -r requirements.txt
       - name: Run the PytTest script
-        run: API_TOKEN=${{ secrets.API_TOKEN }} pytest
+        run: export API_TOKEN=${{ secrets.API_TOKEN }} && pytest
