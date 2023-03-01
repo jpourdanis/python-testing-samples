@@ -5,6 +5,7 @@ import pytest
 import requests
 import jsonpath
 from conftest import NewUser
+
 randomEmail = f"{secrets.token_hex(8)}@mail.com"
 baseUrl = "https://gorest.co.in/public/v2"
 path = "/graphql"
@@ -40,7 +41,7 @@ def test_successful_creation_new_user():
         'status': NewUser.status,
     }
     response = requests.post(
-        url=baseUrl+path, headers=headers, json={"query": createUserMutation, "variables": createUserVariables})
+        url=f"{baseUrl}{path}", headers=headers, json={"query": createUserMutation, "variables": createUserVariables})
     responseJson = json.loads(response.text)
     assert response.status_code == 200
     NewUser.id = jsonpath.jsonpath(
@@ -54,7 +55,7 @@ def test_successful_creation_new_user():
 @pytest.mark.order(2)
 def test_get_all_users():
     """
-    Test on gorest API, we get all users.
+    Test on gorest API, get all users.
     """
 
     getAllUsersQuery = """
@@ -72,7 +73,7 @@ def test_get_all_users():
     """
 
     response = requests.post(
-        url=baseUrl+path, headers=headers, json={"query": getAllUsersQuery})
+        url=f"{baseUrl}{path}", headers=headers, json={"query": getAllUsersQuery})
     responseJson = json.loads(response.text)
     assert response.status_code == 200
     assert len(jsonpath.jsonpath(responseJson, '$.data.users.nodes')[0]) > 0
@@ -81,7 +82,7 @@ def test_get_all_users():
 @pytest.mark.order(3)
 def test_get_user_details_by_id():
     """
-    Test on gorest API, we get user details by id.
+    Test on gorest API, get user details by id.
     """
 
     getAllUsersQuery = """
@@ -98,7 +99,7 @@ def test_get_user_details_by_id():
 
     getUserDetailsVariables = {'id': NewUser.id}
     response = requests.post(
-        url=baseUrl+path, headers=headers, json={"query": getAllUsersQuery, "variables": getUserDetailsVariables})
+        url=f"{baseUrl}{path}", headers=headers, json={"query": getAllUsersQuery, "variables": getUserDetailsVariables})
     responseJson = json.loads(response.text)
     assert response.status_code == 200
     assert jsonpath.jsonpath(responseJson, '$.data.user.name')[
@@ -133,7 +134,7 @@ def test_update_name_of_a_user():
         'name': nameToUpdate
     }
     response = requests.post(
-        url=baseUrl+path, headers=headers, json={"query": updateUserMutation, "variables": updateUserVariables})
+        url=f"{baseUrl}{path}", headers=headers, json={"query": updateUserMutation, "variables": updateUserVariables})
     responseJson = json.loads(response.text)
     assert response.status_code == 200
     assert jsonpath.jsonpath(responseJson, '$.data.updateUser.user.name')[
@@ -164,7 +165,7 @@ def test_delete_the_user():
 
     deleteUserVariables = {'id': NewUser.id}
     response = requests.post(
-        url=baseUrl+path, headers=headers, json={"query": deleteUserMutation, "variables": deleteUserVariables})
+        url=f"{baseUrl}{path}", headers=headers, json={"query": deleteUserMutation, "variables": deleteUserVariables})
     responseJson = json.loads(response.text)
     assert response.status_code == 200
     assert jsonpath.jsonpath(responseJson, '$.data.deleteUser.user.id')[
