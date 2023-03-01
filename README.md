@@ -14,16 +14,16 @@ pip install -r requirements.txt
 
 ### How to
 
-To run this project you could clone this repo and run this command:
+To run ui tests in parallel use this command:
 
 ```console
-python -m pytest
-```
-
-To run tests in parallel run this command:
-
-```console
-python -m pytest -n auto
+pytest -n auto -m "not serial"
 ```
 
 With this call, pytest will spawn a number of workers processes equal to the number of available CPUs, and distribute the tests randomly across them.
+
+To run api tests serial use this command:
+
+```console
+export API_TOKEN=<your-api-token-here> && python -m pytest -n0 -m "serial"
+```

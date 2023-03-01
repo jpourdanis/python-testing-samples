@@ -12,7 +12,7 @@ path = "/graphql"
 headers = {"Authorization": f"Bearer {os.environ.get('API_TOKEN')}"}
 
 
-@pytest.mark.order(1)
+@pytest.mark.serial
 def test_successful_creation_new_user():
     """
     Test on gorest API, create user with a random email.
@@ -52,7 +52,7 @@ def test_successful_creation_new_user():
         0] == NewUser.email
 
 
-@pytest.mark.order(2)
+@pytest.mark.serial
 def test_get_all_users():
     """
     Test on gorest API, get all users.
@@ -79,7 +79,7 @@ def test_get_all_users():
     assert len(jsonpath.jsonpath(responseJson, '$.data.users.nodes')[0]) > 0
 
 
-@pytest.mark.order(3)
+@pytest.mark.serial
 def test_get_user_details_by_id():
     """
     Test on gorest API, get user details by id.
@@ -108,7 +108,7 @@ def test_get_user_details_by_id():
         0] == NewUser.email
 
 
-@pytest.mark.order(4)
+@pytest.mark.serial
 def test_update_name_of_a_user():
     """
     Test on gorest API, update the user name.
@@ -143,7 +143,7 @@ def test_update_name_of_a_user():
         0] == NewUser.email
 
 
-@pytest.mark.order(5)
+@pytest.mark.serial
 def test_delete_the_user():
     """
     Test on gorest API, delete the user.
