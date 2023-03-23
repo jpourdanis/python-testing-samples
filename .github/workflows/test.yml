@@ -18,6 +18,6 @@ jobs:
       - name: Install the necessary packages
         run: pip install -r requirements.txt
       - name: Run the API tests serial
-        run: export API_TOKEN=${{ secrets.API_TOKEN }} && pytest -n0 -m "serial"
+        run: export API_TOKEN=${{ secrets.API_TOKEN }} && pytest -n0 -m "serial" --disable-warnings
       - name: Run the UI tests in parallel
-        run: pytest -n auto -m "not serial"
+        run: pytest -n auto -m "not serial" --disable-warnings
